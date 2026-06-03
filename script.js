@@ -7,9 +7,16 @@ const itemCount = document.getElementById("item-count");
 const clearBtn = document.getElementById("clear-completed");
 const filterBtns = document.querySelectorAll(".filter-btn");
 const loginOverlay = document.getElementById("login-overlay");
-const loginForm = document.getElementById("login-form");
-const loginPassword = document.getElementById("login-password");
-const loginError = document.getElementById("login-error");
+const authForm = document.getElementById("auth-form");
+const authTitle = document.getElementById("auth-title");
+const authSubtitle = document.getElementById("auth-subtitle");
+const authEmail = document.getElementById("auth-email");
+const authPassword = document.getElementById("auth-password");
+const authSubmit = document.getElementById("auth-submit");
+const authError = document.getElementById("auth-error");
+const authInfo = document.getElementById("auth-info");
+const authToggleText = document.getElementById("auth-toggle-text");
+const authToggleBtn = document.getElementById("auth-toggle-btn");
 const logoutBtn = document.getElementById("logout-btn");
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -502,13 +509,40 @@ filterBtns.forEach((btn) => {
   });
 });
 
-// --- Oturum / ortak şifreyle giriş ---
+// --- Oturum / e-posta + şifre ile kayıt ve giriş ---
+
+let authMode = "login"; // "login" | "signup"
+
+function clearAuthMessages() {
+  authError.textContent = "";
+  authInfo.textContent = "";
+}
+
+function setAuthMode(mode) {
+  authMode = mode;
+  clearAuthMessages();
+  if (mode === "signup") {
+    authTitle.textContent = "📝 Kayıt ol";
+    authSubtitle.textContent = "E-posta ve şifreyle hesap oluştur.";
+    authSubmit.textContent = "Kayıt ol";
+    authPassword.setAttribute("autocomplete", "new-password");
+    authToggleText.textContent = "Zaten hesabın var mı?";
+    authToggleBtn.textContent = "Giriş yap";
+  } else {
+    authTitle.textContent = "🔒 Giriş";
+    authSubtitle.textContent = "Listeyi görmek için giriş yap.";
+    authSubmit.textContent = "Giriş yap";
+    authPassword.setAttribute("autocomplete", "current-password");
+    authToggleText.textContent = "Hesabın yok mu?";
+    authToggleBtn.textContent = "Kayıt ol";
+  }
+}
 
 function showLogin() {
   loginOverlay.classList.remove("hidden");
   logoutBtn.classList.add("hidden");
-  loginPassword.value = "";
-  loginPassword.focus();
+  setAuthMode("login");
+  authEmail.focus();
 }
 
 function showApp() {
@@ -517,21 +551,61 @@ function showApp() {
   loadTodos();
 }
 
-loginForm.addEventListener("submit", async (e) => {
+authToggleBtn.addEventListener("click", () => {
+  setAuthMode(authMode === "login" ? "signup" : "login");
+  authPassword.value = "";
+});
+
+authForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  loginError.textContent = "";
-  const password = loginPassword.value;
-  if (!password) return;
-  const { error } = await sb.auth.signInWithPassword({
-    email: SHARED_EMAIL,
-    password,
-  });
-  if (error) {
-    loginError.textContent = "Şifre hatalı, tekrar dene.";
-    loginPassword.select();
+  clearAuthMessages();
+  const email = authEmail.value.trim();
+  const password = authPassword.value;
+  if (!email || !password) {
+    authError.textContent = "E-posta ve şifre gerekli.";
     return;
   }
-  showApp();
+
+  authSubmit.disabled = true;
+  try {
+    if (authMode === "signup") {
+      if (password.length < 6) {
+        authError.textContent = "Şifre en az 6 karakter olmalı.";
+        return;
+      }
+      const { data, error } = await sb.auth.signUp({ email, password });
+      if (error) {
+        authError.textContent = "Kayıt başarısız: " + error.message;
+        return;
+      }
+      if (data.session) {
+        // (Onay kapalıysa) doğrudan giriş
+        showApp();
+      } else {
+        // Onay maili gönderildi; giriş moduna geç ama bilgi mesajını koru
+        setAuthMode("login");
+        authEmail.value = email;
+        authPassword.value = "";
+        authInfo.textContent =
+          `Onay maili ${email} adresine gönderildi. Linke tıkladıktan sonra giriş yapabilirsin.`;
+      }
+    } else {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) {
+        const msg = (error.message || "").toLowerCase();
+        if (msg.includes("not confirmed")) {
+          authError.textContent =
+            "E-postanı henüz onaylamadın. Gelen kutunu kontrol et.";
+        } else {
+          authError.textContent = "E-posta veya şifre hatalı.";
+        }
+        return;
+      }
+      showApp();
+    }
+  } finally {
+    authSubmit.disabled = false;
+  }
 });
 
 logoutBtn.addEventListener("click", async () => {

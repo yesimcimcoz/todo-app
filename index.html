@@ -8,12 +8,18 @@
 </head>
 <body>
   <div id="login-overlay" class="login-overlay hidden">
-    <form id="login-form" class="login-box">
-      <h2>🔒 Giriş</h2>
-      <p>Listeyi görmek için ortak şifreyi gir.</p>
-      <input type="password" id="login-password" placeholder="Şifre" autocomplete="current-password">
-      <button type="submit">Giriş yap</button>
-      <span id="login-error" class="login-error"></span>
+    <form id="auth-form" class="login-box">
+      <h2 id="auth-title">🔒 Giriş</h2>
+      <p id="auth-subtitle">Listeyi görmek için giriş yap.</p>
+      <input type="email" id="auth-email" placeholder="E-posta" autocomplete="email">
+      <input type="password" id="auth-password" placeholder="Şifre" autocomplete="current-password">
+      <button type="submit" id="auth-submit">Giriş yap</button>
+      <span id="auth-error" class="login-error"></span>
+      <span id="auth-info" class="login-info"></span>
+      <p class="auth-toggle">
+        <span id="auth-toggle-text">Hesabın yok mu?</span>
+        <button type="button" id="auth-toggle-btn">Kayıt ol</button>
+      </p>
     </form>
   </div>
 
