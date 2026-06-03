@@ -7,8 +7,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="login-overlay" class="login-overlay hidden">
+    <form id="login-form" class="login-box">
+      <h2>🔒 Giriş</h2>
+      <p>Listeyi görmek için ortak şifreyi gir.</p>
+      <input type="password" id="login-password" placeholder="Şifre" autocomplete="current-password">
+      <button type="submit">Giriş yap</button>
+      <span id="login-error" class="login-error"></span>
+    </form>
+  </div>
+
   <div class="container">
-    <h1>👹 Yap ya da Yapma Listesi</h1>
+    <h1>
+      👹 Yap ya da Yapma Listesi
+      <button id="logout-btn" class="logout-btn hidden" title="Çıkış yap">Çıkış</button>
+    </h1>
 
     <form id="todo-form" class="todo-form">
       <input type="text" id="todo-input" placeholder="eee bugün ne yapmamız gerekiyor Yeşim" autocomplete="off">

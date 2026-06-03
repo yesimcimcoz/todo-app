@@ -6,6 +6,11 @@ const list = document.getElementById("todo-list");
 const itemCount = document.getElementById("item-count");
 const clearBtn = document.getElementById("clear-completed");
 const filterBtns = document.querySelectorAll(".filter-btn");
+const loginOverlay = document.getElementById("login-overlay");
+const loginForm = document.getElementById("login-form");
+const loginPassword = document.getElementById("login-password");
+const loginError = document.getElementById("login-error");
+const logoutBtn = document.getElementById("logout-btn");
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -497,4 +502,49 @@ filterBtns.forEach((btn) => {
   });
 });
 
-loadTodos();
+// --- Oturum / ortak şifreyle giriş ---
+
+function showLogin() {
+  loginOverlay.classList.remove("hidden");
+  logoutBtn.classList.add("hidden");
+  loginPassword.value = "";
+  loginPassword.focus();
+}
+
+function showApp() {
+  loginOverlay.classList.add("hidden");
+  logoutBtn.classList.remove("hidden");
+  loadTodos();
+}
+
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  loginError.textContent = "";
+  const password = loginPassword.value;
+  if (!password) return;
+  const { error } = await sb.auth.signInWithPassword({
+    email: SHARED_EMAIL,
+    password,
+  });
+  if (error) {
+    loginError.textContent = "Şifre hatalı, tekrar dene.";
+    loginPassword.select();
+    return;
+  }
+  showApp();
+});
+
+logoutBtn.addEventListener("click", async () => {
+  await sb.auth.signOut();
+  todos = [];
+  render();
+  showLogin();
+});
+
+async function init() {
+  const { data } = await sb.auth.getSession();
+  if (data.session) showApp();
+  else showLogin();
+}
+
+init();
