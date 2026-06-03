@@ -6,6 +6,7 @@ const list = document.getElementById("todo-list");
 const itemCount = document.getElementById("item-count");
 const clearBtn = document.getElementById("clear-completed");
 const filterBtns = document.querySelectorAll(".filter-btn");
+const personFilterSelect = document.getElementById("person-filter");
 const loginOverlay = document.getElementById("login-overlay");
 const authForm = document.getElementById("auth-form");
 const authTitle = document.getElementById("auth-title");
@@ -23,7 +24,25 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let todos = [];
 let filter = "all";
+let personFilter = "all"; // seçili kişi ("all" = herkes)
 let expanded = new Set(); // adım paneli açık olan görevler
+
+// Görevlerdeki kişilere göre açılır listeyi günceller (seçimi korur)
+function updatePeopleOptions() {
+  const people = [...new Set(todos.map((t) => t.assignee).filter(Boolean))].sort(
+    (a, b) => a.localeCompare(b, "tr")
+  );
+  // seçili kişi artık yoksa "herkes"e dön
+  if (personFilter !== "all" && !people.includes(personFilter)) {
+    personFilter = "all";
+  }
+  personFilterSelect.innerHTML =
+    '<option value="all">Herkes</option>' +
+    people
+      .map((p) => `<option value="${p.replace(/"/g, "&quot;")}">${p}</option>`)
+      .join("");
+  personFilterSelect.value = personFilter;
+}
 
 // Supabase'den görevleri ve adımlarını çekip ön yüz biçimine dönüştürür
 async function loadTodos() {
@@ -72,9 +91,11 @@ function todayString() {
 function render() {
   list.innerHTML = "";
   const today = todayString();
+  updatePeopleOptions();
 
   const filtered = todos
     .filter((t) => {
+      if (personFilter !== "all" && t.assignee !== personFilter) return false;
       if (filter === "active") return !t.completed;
       if (filter === "completed") return t.completed;
       if (filter === "today") {
@@ -507,6 +528,11 @@ filterBtns.forEach((btn) => {
     filter = btn.dataset.filter;
     render();
   });
+});
+
+personFilterSelect.addEventListener("change", () => {
+  personFilter = personFilterSelect.value;
+  render();
 });
 
 // --- Oturum / e-posta + şifre ile kayıt ve giriş ---

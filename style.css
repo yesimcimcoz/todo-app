@@ -225,6 +225,31 @@ h1 {
   color: #fff;
 }
 
+.person-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.person-filter {
+  flex: 1;
+  padding: 8px 10px;
+  border: 2px solid #e2e2ec;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #2d2d3a;
+  cursor: pointer;
+  outline: none;
+}
+
+.person-filter:focus {
+  border-color: #764ba2;
+}
+
 .todo-list {
   list-style: none;
   margin-bottom: 16px;
