@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yapılacaklar Listesi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>👹 Yap ya da Yapma Listesi</h1>
+
+    <form id="todo-form" class="todo-form">
+      <input type="text" id="todo-input" placeholder="eee bugün ne yapmamız gerekiyor Yeşim" autocomplete="off">
+      <input type="text" id="todo-assignee" placeholder="Kim yapacak?" autocomplete="off">
+      <input type="date" id="todo-date" title="Son bitirme tarihi">
+      <button type="submit">Ekle</button>
+    </form>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">Tümü</button>
+      <button class="filter-btn" data-filter="today">Bugün</button>
+      <button class="filter-btn" data-filter="active">Aktif</button>
+      <button class="filter-btn" data-filter="completed">Tamamlanan</button>
+    </div>
+
+    <ul id="todo-list" class="todo-list"></ul>
+
+    <div class="footer">
+      <span id="item-count">0 görev</span>
+      <button id="clear-completed">Tamamlananları temizle</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

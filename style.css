@@ -1,0 +1,438 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:
+    linear-gradient(135deg, rgba(102, 126, 234, 0.45), rgba(118, 75, 162, 0.45)),
+    url("https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=1600&q=80")
+      center / cover no-repeat fixed;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 16px;
+  color: #2d2d3a;
+}
+
+.container {
+  background: #fff;
+  width: 100%;
+  max-width: 680px;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  padding: 28px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+}
+
+.todo-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+#todo-date {
+  padding: 12px 14px;
+  border: 2px solid #e2e2ec;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  color: #555;
+  transition: border-color 0.2s;
+}
+
+#todo-date:focus {
+  border-color: #764ba2;
+}
+
+#todo-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 2px solid #e2e2ec;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#todo-input:focus {
+  border-color: #764ba2;
+}
+
+.todo-form button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #764ba2;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.todo-form button:hover {
+  background: #5e3a85;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: #f0f0f7;
+  color: #555;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.filter-btn.active {
+  background: #764ba2;
+  color: #fff;
+}
+
+.todo-list {
+  list-style: none;
+  margin-bottom: 16px;
+}
+
+.todo-item {
+  border-radius: 10px;
+  background: #f8f8fc;
+  margin-bottom: 8px;
+  animation: fadeIn 0.2s ease;
+  overflow: hidden;
+}
+
+.todo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.todo-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #764ba2;
+}
+
+.todo-item .text {
+  flex: 1;
+  word-break: break-word;
+}
+
+.todo-item .due {
+  font-size: 0.78rem;
+  color: #555;
+  background: #ece9f5;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.todo-item .due {
+  cursor: pointer;
+}
+
+.todo-item .due.overdue {
+  color: #c0392b;
+  background: #fbe4e1;
+}
+
+.todo-item .due.today,
+.step-item .step-due.today {
+  color: #b8860b;
+  background: #fdf3d0;
+  font-weight: 600;
+}
+
+.todo-item .add-date-btn {
+  border: 1px dashed #c4bcd9;
+  background: transparent;
+  color: #8a82a3;
+  font-size: 0.78rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.todo-item .add-date-btn:hover {
+  border-color: #764ba2;
+  color: #764ba2;
+}
+
+.todo-item .date-edit-input {
+  padding: 4px 6px;
+  border: 2px solid #764ba2;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.todo-item .assignee {
+  font-size: 0.78rem;
+  color: #1d6b4f;
+  background: #e2f3ea;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  cursor: pointer;
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.todo-item .add-person-btn {
+  border: 1px dashed #c4bcd9;
+  background: transparent;
+  color: #8a82a3;
+  font-size: 0.78rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.todo-item .add-person-btn:hover {
+  border-color: #1d6b4f;
+  color: #1d6b4f;
+}
+
+.todo-item .assignee-edit-input {
+  padding: 4px 6px;
+  border: 2px solid #1d6b4f;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  outline: none;
+  max-width: 130px;
+}
+
+.todo-item.completed .due,
+.todo-item.completed .assignee {
+  opacity: 0.5;
+}
+
+.todo-item.completed .text {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.todo-item .edit-btn {
+  border: none;
+  background: transparent;
+  color: #764ba2;
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+}
+
+.todo-item .delete-btn {
+  border: none;
+  background: transparent;
+  color: #e05555;
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+}
+
+.todo-item .edit-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 2px solid #764ba2;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.todo-item .steps-toggle {
+  border: none;
+  background: transparent;
+  color: #764ba2;
+  font-size: 0.78rem;
+  padding: 3px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.todo-item .steps-toggle:hover {
+  background: #ece9f5;
+}
+
+.steps-panel {
+  padding: 8px 14px 14px 24px;
+  background: #f1f0f8;
+  margin-left: 20px;
+  border-left: 3px solid #cdc4e6;
+}
+
+.step-list {
+  list-style: none;
+  margin-bottom: 8px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  position: relative;
+}
+
+.step-item::before {
+  content: "↳";
+  color: #b3a8d4;
+  font-size: 0.9rem;
+}
+
+.step-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #764ba2;
+}
+
+.step-item .step-text {
+  flex: 1;
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.step-item.completed .step-text {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.step-item .step-due {
+  font-size: 0.72rem;
+  color: #555;
+  background: #e4e0f0;
+  padding: 2px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.step-item .step-due.overdue {
+  color: #c0392b;
+  background: #fbe4e1;
+}
+
+.step-item.completed .step-due {
+  opacity: 0.5;
+}
+
+.step-item .add-date-btn {
+  border: 1px dashed #c4bcd9;
+  background: transparent;
+  color: #8a82a3;
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.step-item .add-date-btn:hover {
+  border-color: #764ba2;
+  color: #764ba2;
+}
+
+.step-item .step-del {
+  border: none;
+  background: transparent;
+  color: #e05555;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px 4px;
+}
+
+.step-empty {
+  font-size: 0.82rem;
+  color: #aaa;
+  padding: 4px 0 8px;
+}
+
+.step-form {
+  display: flex;
+  gap: 8px;
+}
+
+.step-form input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #d8d4e6;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.step-form input:focus {
+  border-color: #764ba2;
+}
+
+.step-form button {
+  width: 38px;
+  border: none;
+  border-radius: 8px;
+  background: #764ba2;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.step-form button:hover {
+  background: #5e3a85;
+}
+
+.empty {
+  text-align: center;
+  color: #aaa;
+  padding: 20px 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+#clear-completed {
+  border: none;
+  background: transparent;
+  color: #764ba2;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+#clear-completed:hover {
+  text-decoration: underline;
+}

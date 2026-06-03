@@ -1,0 +1,13 @@
+# Hassas: Supabase veritabanı şifresi — asla repoya gönderme
+.supabase-db-password.txt
+
+# Supabase CLI yerel/geçici dosyaları
+supabase/.temp/
+supabase/.branches/
+
+# Yerel önizleme yapılandırması ve sunucu
+.claude/
+server.js
+
+# OS
+.DS_Store
